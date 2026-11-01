@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Date Input Placeholder iOS Workaround</title>
+  <style>
+    .date-wrapper {
+      position: relative;
+      display: inline-block;
+    }
+    .date-placeholder {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #aaa;
+      pointer-events: none;
+      transition: opacity 0.2s;
+      font-size: 1em;
+    }
+    input[type="date"]:not(:placeholder-shown) + .date-placeholder,
+    input[type="date"]:focus + .date-placeholder {
+      opacity: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="date-wrapper">
+    <input id="dateInput" type="date" autocomplete="off" style="width: 200px;" />
+    <span class="date-placeholder" id="datePlaceholder">Select a date</span>
+  </div>
+  <script>
+    var input = document.getElementById('dateInput');
+    var placeholder = document.getElementById('datePlaceholder');
+    var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+    if (isIOS) {
+      input.type = 'text';
+      input.addEventListener('focus', function() {
+        input.type = 'date';
+        setTimeout(function() {
+          input.showPicker && input.showPicker();
+        }, 0);
+      });
+      input.addEventListener('blur', function() {
+        if (!input.value) {
+          input.type = 'text';
+        }
+      });
+    }
+
+    // Hide placeholder when value is set
+    input.addEventListener('input', function() {
+      placeholder.style.opacity = input.value ? '0' : '1';
+    });
+    // Initial state
+    placeholder.style.opacity = input.value ? '0' : '1';
+  </script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Date Input Placeholder CodePen Mimic</title>
+  <style>
+    .date-wrapper {
+      position: relative;
+      display: inline-block;
+    }
+    .webkit-date-placeholder {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #aaa;
+      pointer-events: none;
+      transition: opacity 0.2s;
+      font-size: 1em;
+      z-index: 2;
+      background: transparent;
+    }
+    .date-input {
+      position: relative;
+      z-index: 3;
+      width: 200px;
+      background: transparent;
+    }
+  </style>
+</head>
+<body>
+  <div class="date-wrapper">
+    <input id="dateInput" class="date-input" type="date" autocomplete="off" />
+    <div useragentpart="-webkit-date-and-time-value" class="webkit-date-placeholder" id="webkitPlaceholder">Select a date</div>
+  </div>
+  <script>
+    var input = document.getElementById('dateInput');
+    var placeholder = document.getElementById('webkitPlaceholder');
+
+    function togglePlaceholder() {
+      placeholder.style.opacity = input.value ? '0' : '1';
+    }
+
+    input.addEventListener('input', togglePlaceholder);
+    input.addEventListener('focus', togglePlaceholder);
+    input.addEventListener('blur', togglePlaceholder);
+    // Initial state
+    togglePlaceholder();
+  </script>
+</body>
+</html>

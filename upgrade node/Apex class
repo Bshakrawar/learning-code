@@ -1,0 +1,17 @@
+public with sharing class DataHubSessionController {
+    @AuraEnabled(cacheable=true)
+    public static String getSessionToken(Id userId) {
+        // Replace with your secure token storage logic
+        // Example: DataHub_Session__c is a custom object with Token__c and Expiry__c fields
+        DataHub_Session__c session = [
+            SELECT Token__c, Expiry__c
+            FROM DataHub_Session__c
+            WHERE User__c = :userId
+            LIMIT 1
+        ];
+        if (session != null && session.Expiry__c > System.now()) {
+            return session.Token__c;
+        }
+        return null;
+    }
+}
